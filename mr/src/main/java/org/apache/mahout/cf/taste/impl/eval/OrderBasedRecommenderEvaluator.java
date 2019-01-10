@@ -338,7 +338,7 @@ public final class OrderBasedRecommenderEvaluator {
           break;
         }
       }
-      if (vectorZ[i] != 0) {
+      if (vectorZ[i] != 0 && count != 0) { // controllo su variabile count momentaneamente inutile, implementato per evitare errori in caso di modifiche del codice future
         ranks[i] = (rank / count) * (vectorZ[i] < 0 ? -1 : 1);  // better be at least 1
         ranksAbs[i] = Math.abs(ranks[i]);
       }
