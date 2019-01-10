@@ -71,40 +71,45 @@ public final class KDDCupDataModel implements DataModel {
     dataFileDirectory = dataFile.getParentFile();
 
     Iterator<Pair<PreferenceArray,long[]>> dataIterator = new DataFileIterator(dataFile);
-    if (samplingRate < 1.0) {
-      dataIterator = new SamplingIterator<>(dataIterator, samplingRate);
-    }
-
-    FastByIDMap<PreferenceArray> userData = new FastByIDMap<>();
-    FastByIDMap<FastByIDMap<Long>> timestamps = new FastByIDMap<>();
-
-    while (dataIterator.hasNext()) {
-
-      Pair<PreferenceArray,long[]> pair = dataIterator.next();
-      PreferenceArray userPrefs = pair.getFirst();
-      long[] timestampsForPrefs = pair.getSecond();
-
-      userData.put(userPrefs.getUserID(0), userPrefs);
-      if (storeDates) {
-        FastByIDMap<Long> itemTimestamps = new FastByIDMap<>();
-        for (int i = 0; i < timestampsForPrefs.length; i++) {
-          long timestamp = timestampsForPrefs[i];
-          if (timestamp > 0L) {
-            itemTimestamps.put(userPrefs.getItemID(i), timestamp);
-          }
-        }
-      }
-
-    }
-
-    if (storeDates) {
-      delegate = new GenericDataModel(userData, timestamps);
-    } else {
-      delegate = new GenericDataModel(userData);
-    }
-
-    Runtime runtime = Runtime.getRuntime();
-    log.info("Loaded data model in about {}MB heap", (runtime.totalMemory() - runtime.freeMemory()) / 1000000);
+	try {
+	    if (samplingRate < 1.0) {
+	      dataIterator = new SamplingIterator<>(dataIterator, samplingRate);
+	    }
+	
+	    FastByIDMap<PreferenceArray> userData = new FastByIDMap<>();
+	    FastByIDMap<FastByIDMap<Long>> timestamps = new FastByIDMap<>();
+	
+	    while (dataIterator.hasNext()) {
+	
+	      Pair<PreferenceArray,long[]> pair = dataIterator.next();
+	      PreferenceArray userPrefs = pair.getFirst();
+	      long[] timestampsForPrefs = pair.getSecond();
+	
+	      userData.put(userPrefs.getUserID(0), userPrefs);
+	      if (storeDates) {
+	        FastByIDMap<Long> itemTimestamps = new FastByIDMap<>();
+	        for (int i = 0; i < timestampsForPrefs.length; i++) {
+	          long timestamp = timestampsForPrefs[i];
+	          if (timestamp > 0L) {
+	            itemTimestamps.put(userPrefs.getItemID(i), timestamp);
+	          }
+	        }
+	      }
+	
+	    }
+	
+	    if (storeDates) {
+	      delegate = new GenericDataModel(userData, timestamps);
+	    } else {
+	      delegate = new GenericDataModel(userData);
+	    }
+	
+	    Runtime runtime = Runtime.getRuntime();
+	    log.info("Loaded data model in about {}MB heap", (runtime.totalMemory() - runtime.freeMemory()) / 1000000);
+	}
+	catch(Exception e) {
+		throw e;
+	}finally {((DataFileIterator)dataIterator).close();}
   }
 
   public File getDataFileDirectory() {

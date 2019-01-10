@@ -131,7 +131,7 @@ public final class DataFileIterator
   }
 
   @Override
-  public void close() {
+  public static void close() {
     endOfData();
     try {
       Closeables.close(lineIterator, true);
