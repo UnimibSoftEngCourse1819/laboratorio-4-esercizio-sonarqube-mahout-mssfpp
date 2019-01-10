@@ -122,7 +122,7 @@ public class IDReader {
     }
   }
 
-  private void readItemIds() throws IOException, IllegalStateException {
+  private void readItemIds() throws IOException {
     if (isItemsFileSpecified() && !isUserItemFileSpecified()) {
       itemIds = readIDList(itemsFile);
     } else if (isUserItemFileSpecified() && !isItemsFileSpecified()) {
