@@ -82,7 +82,10 @@ public final class RecommenderServlet extends HttpServlet {
     if (userIDString == null) {
       throw new ServletException("userID was not specified");
     }
+    try {
     long userID = Long.parseLong(userIDString);
+    }catch(Exception e) { throw e; }
+    
     String howManyString = request.getParameter("howMany");
     int howMany = howManyString == null ? DEFAULT_HOW_MANY : Integer.parseInt(howManyString);
     boolean debug = Boolean.parseBoolean(request.getParameter("debug"));
