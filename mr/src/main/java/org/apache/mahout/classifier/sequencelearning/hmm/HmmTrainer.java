@@ -339,13 +339,15 @@ public final class HmmTrainer {
           sum += emissionMatrix.getQuick(j, k);
         }
         for (int k = 0; k < iteration.getNrOfOutputStates(); ++k) {
-          emissionMatrix.setQuick(j, k, emissionMatrix.getQuick(j, k) / sum);
+        	if(sum!= 0)
+        		emissionMatrix.setQuick(j, k, emissionMatrix.getQuick(j, k) / sum);
         }
         // normalization parameter for initial probabilities
         isum += initialProbabilities.getQuick(j);
       }
       // normalize initial probabilities
       for (int i = 0; i < iteration.getNrOfHiddenStates(); ++i) {
+    	  if(isum != 0)
         initialProbabilities.setQuick(i, initialProbabilities.getQuick(i)
             / isum);
       }
