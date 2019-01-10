@@ -54,8 +54,6 @@ import org.slf4j.LoggerFactory;
 public final class AggregateAndRecommendReducer extends
     Reducer<VarLongWritable,PrefAndSimilarityColumnWritable,VarLongWritable,RecommendedItemsWritable> {
 
-  private static final Logger log = LoggerFactory.getLogger(AggregateAndRecommendReducer.class);
-
   static final String ITEMID_INDEX_PATH = "itemIDIndexPath";
   static final String NUM_RECOMMENDATIONS = "numRecommendations";
   static final int DEFAULT_NUM_RECOMMENDATIONS = 10;
